@@ -12,7 +12,7 @@ export default function Hero() {
       <main
         className="h-screen bg-cover bg-center"
         style={{
-          backgroundImage: `url('/background-4.jpg')`,
+          backgroundImage: `url('/background.jpg')`,
         }}
       >
         <Navbar />
