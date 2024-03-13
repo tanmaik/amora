@@ -24,7 +24,7 @@ model Couple {
 model User {
   id                            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                          String?
-  email                         String?
+  email                         String?  @unique
   image                         String?
   Couple_Couple_partner_1ToUser Couple[] @relation("Couple_partner_1ToUser")
   Couple_Couple_partner_2ToUser Couple[] @relation("Couple_partner_2ToUser")
