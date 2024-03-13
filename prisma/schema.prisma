@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,27 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRES_URL_NON_POOLING")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Couple {
+  id                          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                  DateTime @default(now()) @db.Timestamptz(6)
+  partner_1                   String?  @db.Uuid
+  partner_2                   String?  @db.Uuid
+  couple_key                  BigInt?  @unique
+  relationship_type           String?
+  distance                    String?
+  User_Couple_partner_1ToUser User?    @relation("Couple_partner_1ToUser", fields: [partner_1], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_Couple_partner_1_fkey")
+  User_Couple_partner_2ToUser User?    @relation("Couple_partner_2ToUser", fields: [partner_2], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_Couple_partner_2_fkey")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model User {
+  id                            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                          String?
+  email                         String?
+  image                         String?
+  Couple_Couple_partner_1ToUser Couple[] @relation("Couple_partner_1ToUser")
+  Couple_Couple_partner_2ToUser Couple[] @relation("Couple_partner_2ToUser")
 }

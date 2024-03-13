@@ -70,7 +70,7 @@ export default function Hero() {
             >
               closer
             </h1>
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-8">
               <Button text="Join the journey ->" />
             </div>
           </motion.div>
