@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import localFont from "next/font/local";
 import Button from "../shared/Button";
+import { signIn } from "next-auth/react";
 import { motion, useAnimation } from "framer-motion";
 import AmoraLogo from "./AmoraLogo";
 
@@ -71,7 +72,12 @@ export default function Hero() {
               closer
             </h1>
             <div className="flex justify-center mt-8">
-              <Button text="Join the journey ->" />
+              <Button
+                text="Join the journey ->"
+                action={() => {
+                  signIn("google");
+                }}
+              />
             </div>
           </motion.div>
         </div>
