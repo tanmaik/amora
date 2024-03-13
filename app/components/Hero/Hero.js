@@ -27,7 +27,7 @@ export default function Hero() {
         style={{
           backgroundImage: `url('/background.jpg')`,
         }}
-        initial={{ y: "100%", scale: 1.2 }}
+        initial={{ y: "100%", scale: 1.5 }}
         animate={{ y: 0, scale: 1 }}
         transition={{ duration: 1.2, ease: [0.165, 0.84, 0.44, 1] }}
         onAnimationComplete={handleBackgroundAnimationComplete}
