@@ -56,7 +56,7 @@ export default function Hero() {
         </motion.div>
         <div className="flex justify-center h-[80%] items-center px-8">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={textAnimation}>
-            <p className="text-white font-semibold text-center text-lg sm:text-xl">
+            <p className="text-white font-medium text-center text-lg sm:text-xl">
               Communicate better, grow closer, and keep your relationship
               thriving
             </p>
