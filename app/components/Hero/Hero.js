@@ -1,19 +1,29 @@
 "use client";
 // components/Hero/Hero.js
 
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import localFont from "next/font/local";
 import Button from "../shared/Button";
 import { motion, useAnimation } from "framer-motion";
+import AmoraLogo from "./AmoraLogo";
 
 const headerFont = localFont({ src: "./hornbill_black.otf" });
 
 export default function Hero() {
+  const [showLogo, setShowLogo] = useState(true);
+  const backgroundAnimation = useAnimation();
   const textAnimation = useAnimation();
 
-  const handleBackgroundAnimationComplete = async () => {
-    await textAnimation.start({
+  const handleLogoAnimationComplete = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Increased delay
+    setShowLogo(false);
+    await backgroundAnimation.start({
+      y: 0,
+      scale: 1,
+      transition: { duration: 1.2, ease: [0.165, 0.84, 0.44, 1] },
+    });
+    textAnimation.start({
       opacity: 1,
       y: 0,
       transition: { duration: 1.2, ease: [0.165, 0.84, 0.44, 1] },
@@ -22,15 +32,16 @@ export default function Hero() {
 
   return (
     <>
+      {showLogo && (
+        <AmoraLogo onAnimationComplete={handleLogoAnimationComplete} />
+      )}
       <motion.main
         className="h-screen bg-cover bg-center overflow-hidden"
         style={{
           backgroundImage: `url('/background.jpg')`,
         }}
         initial={{ y: "100%", scale: 1.5 }}
-        animate={{ y: 0, scale: 1 }}
-        transition={{ duration: 1.2, ease: [0.165, 0.84, 0.44, 1] }}
-        onAnimationComplete={handleBackgroundAnimationComplete}
+        animate={backgroundAnimation}
       >
         <motion.div
           initial={{ y: -40, opacity: 0 }}
@@ -38,7 +49,7 @@ export default function Hero() {
           transition={{
             duration: 1.2,
             ease: [0.165, 0.84, 0.44, 1],
-            delay: 1.2,
+            delay: 2.7, // Adjusted delay to match the increased logo display time
           }}
         >
           <Navbar />
