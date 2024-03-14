@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 import { UsersIcon } from "@heroicons/react/20/solid";
 import CreateButton from "./CreateButton";
 import DeleteButton from "./DeleteButton";
+import WaitingScreen from "./WaitingScreen";
 
 const headerFont = localFont({ src: "../shared/hornbill_black.otf" });
 
@@ -19,19 +20,20 @@ export default async function CoupleCreation() {
   });
 
   if (user.couple_id) {
+    const couple = await prisma.couple.findFirst({
+      where: {
+        id: user.couple_id,
+      },
+    });
     return (
       <div>
-        Waiting for your partner...
-        <DeleteButton coupleId={user.couple_id} userId={user.id} />
-        <SignOutButton>
-          <p className="mt-10 text-[#B27070]">Sign out</p>
-        </SignOutButton>
+        <WaitingScreen user={user} couple={couple} />
       </div>
     );
   }
   return (
     <div className="h-screen flex justify-center items-center w-full ">
-      <div className="text-center w-full px-4 sm:px-0 sm:w-[30rem] border-">
+      <div className="text-center w-full px-4 sm:px-0 sm:w-[30rem]">
         <div className="flex justify-center">
           <Logo fill="#B27070" width={"100"} />
         </div>

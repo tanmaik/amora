@@ -4,8 +4,8 @@ export default function DeleteButton({ coupleId, userId }) {
   const router = useRouter();
   return (
     <button
-      onClick={() => {
-        fetch("/api/couple/delete", {
+      onClick={async () => {
+        await fetch("/api/couple/delete", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -17,8 +17,9 @@ export default function DeleteButton({ coupleId, userId }) {
         });
         router.refresh();
       }}
+      className="text-[#B27070] font-medium"
     >
-      Go back {"->"}
+      Made a mistake? Go back
     </button>
   );
 }

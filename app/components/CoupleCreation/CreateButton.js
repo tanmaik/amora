@@ -7,8 +7,8 @@ export default function CreateButton({ userId }) {
   return (
     <button
       className="px-4 py-2 rounded-full bg-[#B27070] hover:bg-[#B27070]/80 transition-all text-white font-medium"
-      onClick={() => {
-        fetch("/api/couple/create", {
+      onClick={async () => {
+        await fetch("/api/couple/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

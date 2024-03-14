@@ -43,6 +43,7 @@ export default async function Home() {
           id: user.couple_id,
         },
       });
+
       if (!couple.invited_partner) {
         return <CoupleCreation />;
       }
