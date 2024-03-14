@@ -10,8 +10,8 @@ datasource db {
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Couple {
   created_at                         DateTime @default(now()) @db.Timestamptz(6)
-  creation_partner                   String?  @db.Uuid
-  invited_partner                    String?  @db.Uuid
+  creation_partner                   String?  @unique @db.Uuid
+  invited_partner                    String?  @unique @db.Uuid
   couple_key                         BigInt?  @unique(map: "Couples_couple_key_key")
   relationship_type                  String?
   distance                           String?
@@ -24,12 +24,12 @@ model Couple {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model User {
-  id                                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                                   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                                 String?
-  email                                String?  @unique
+  email                                String? @unique
   image                                String?
-  couple_id                            String?  @db.Uuid
-  Couple_Couple_creation_partnerToUser Couple[] @relation("Couple_creation_partnerToUser")
-  Couple_Couple_invited_partnerToUser  Couple[] @relation("Couple_invited_partnerToUser")
-  Couple_User_couple_idToCouple        Couple?  @relation("User_couple_idToCouple", fields: [couple_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_User_couple_id_fkey")
+  couple_id                            String? @db.Uuid
+  Couple_Couple_creation_partnerToUser Couple? @relation("Couple_creation_partnerToUser")
+  Couple_Couple_invited_partnerToUser  Couple? @relation("Couple_invited_partnerToUser")
+  Couple_User_couple_idToCouple        Couple? @relation("User_couple_idToCouple", fields: [couple_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_User_couple_id_fkey")
 }

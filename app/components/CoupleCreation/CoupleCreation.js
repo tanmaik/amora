@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 
 import { UsersIcon } from "@heroicons/react/20/solid";
 import CreateButton from "./CreateButton";
+import DeleteButton from "./DeleteButton";
 
 const headerFont = localFont({ src: "../shared/hornbill_black.otf" });
 
@@ -17,12 +18,11 @@ export default async function CoupleCreation() {
     },
   });
 
-  
   if (user.couple_id) {
     return (
       <div>
         Waiting for your partner...
-        
+        <DeleteButton coupleId={user.couple_id} userId={user.id} />
         <SignOutButton>
           <p className="mt-10 text-[#B27070]">Sign out</p>
         </SignOutButton>
