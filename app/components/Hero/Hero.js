@@ -9,7 +9,7 @@ import { signIn } from "next-auth/react";
 import { motion, useAnimation } from "framer-motion";
 import AmoraLogo from "./AmoraLogo";
 
-const headerFont = localFont({ src: "./hornbill_black.otf" });
+const headerFont = localFont({ src: "../shared/hornbill_black.otf" });
 
 export default function Hero() {
   const [showLogo, setShowLogo] = useState(true);

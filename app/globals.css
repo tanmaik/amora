@@ -3,10 +3,5 @@
 @tailwind utilities;
 
 body {
-  overflow: hidden;
-}
-
-html {
-  background-color: black;
-  color: white;
+  background-color: #fff9f9;
 }

@@ -9,23 +9,27 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Couple {
-  id                          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at                  DateTime @default(now()) @db.Timestamptz(6)
-  partner_1                   String?  @db.Uuid
-  partner_2                   String?  @db.Uuid
-  couple_key                  BigInt?  @unique
-  relationship_type           String?
-  distance                    String?
-  User_Couple_partner_1ToUser User?    @relation("Couple_partner_1ToUser", fields: [partner_1], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_Couple_partner_1_fkey")
-  User_Couple_partner_2ToUser User?    @relation("Couple_partner_2ToUser", fields: [partner_2], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_Couple_partner_2_fkey")
+  created_at                         DateTime @default(now()) @db.Timestamptz(6)
+  creation_partner                   String?  @db.Uuid
+  invited_partner                    String?  @db.Uuid
+  couple_key                         BigInt?  @unique(map: "Couples_couple_key_key")
+  relationship_type                  String?
+  distance                           String?
+  onboarded                          Boolean? @default(false)
+  id                                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  User_Couple_creation_partnerToUser User?    @relation("Couple_creation_partnerToUser", fields: [creation_partner], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_Couples_creation_partner_fkey")
+  User_Couple_invited_partnerToUser  User?    @relation("Couple_invited_partnerToUser", fields: [invited_partner], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_Couples_invited_partner_fkey")
+  User_User_couple_idToCouple        User[]   @relation("User_couple_idToCouple")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model User {
-  id                            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                          String?
-  email                         String?  @unique
-  image                         String?
-  Couple_Couple_partner_1ToUser Couple[] @relation("Couple_partner_1ToUser")
-  Couple_Couple_partner_2ToUser Couple[] @relation("Couple_partner_2ToUser")
+  id                                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                 String?
+  email                                String?  @unique
+  image                                String?
+  couple_id                            String?  @db.Uuid
+  Couple_Couple_creation_partnerToUser Couple[] @relation("Couple_creation_partnerToUser")
+  Couple_Couple_invited_partnerToUser  Couple[] @relation("Couple_invited_partnerToUser")
+  Couple_User_couple_idToCouple        Couple?  @relation("User_couple_idToCouple", fields: [couple_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_User_couple_id_fkey")
 }

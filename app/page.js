@@ -14,6 +14,7 @@ export default async function Home() {
     });
 
     if (!user) {
+      // If the user doesn't exist, create them in the database
       await prisma.user.create({
         data: {
           email: session.user.email,
@@ -22,38 +23,42 @@ export default async function Home() {
         },
       });
     } else {
+      // If the user already exists, update their avatar if it has changed
       await prisma.user.update({
         where: {
           id: user.id,
         },
         data: {
-          name: session.user.name,
           image: session.user.image,
         },
       });
     }
-
-    let couple = await prisma.couple.findFirst({
-      where: {
-        partner_1: user.id,
-      },
-    });
-    if (!couple) {
-      let couple = await prisma.couple.findFirst({
+    // If the user isn't already in a couple, show the couple creation screen so that they can create/join one
+    if (!user.couple_id) {
+      return <CoupleCreation />;
+    } else {
+      // Find the couple that the user is in
+      const couple = await prisma.couple.findFirst({
         where: {
-          partner_2: user.id,
+          id: user.couple_id,
         },
       });
-      if (!couple) {
+      if (!couple.invited_partner) {
         return <CoupleCreation />;
       }
+      // If the user is not in an onboarded couple, show the onboarding couple screen
+      if (!couple.onboarded) {
+      }
+      // If the user is in an onboarded couple, show the home screen
+      else {
+        return (
+          <div className="text-white">
+            Hi {session.user?.name}!<SignOutButton>Sign out!</SignOutButton>
+          </div>
+        );
+      }
     }
-
-    return (
-      <div className="text-white">
-        Hi {session.user?.name}!<SignOutButton>Sign out!</SignOutButton>
-      </div>
-    );
   }
+
   return <Hero />;
 }
